@@ -1,6 +1,7 @@
 
 #include <iostream>
 #include <vector>
+#include <cstdlib>
 #include "FiNode.h"
 using std::cerr;
 using std::endl;
