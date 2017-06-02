@@ -5,7 +5,7 @@ using std::cout;
 using std::endl;
 
 //Construt a hashtable with specified size
-HashTable::HashTable(int size):(this->size)(size){
+HashTable::HashTable(int _size):size(_size){
 	for(int i=0; i<size; i++){
 		content.push_back(new vector<entry>);
 	}
@@ -15,11 +15,11 @@ HashTable::HashTable(int size):(this->size)(size){
 HashTable::~HashTable(){
 	vector<vector<entry>*>::iterator it1;
 	for(it1 = content.begin(); it1 != content.end(); it1++){
-		vector<entry*>::iterator it2;
-		for(it2 = (*it1).begin(); it2 != (*it1).end(); it2++){
+		vector<entry>::iterator it2;
+		for(it2 = (*it1)->begin(); it2 != (*it1)->end(); it2++){
 			delete (*it2);
 		}
-		(*it1).clear();
+		(*it1)->clear();
 		delete(*it1);
 	}
 	content.clear();
@@ -32,10 +32,10 @@ HashTable::~HashTable(){
 	[31^(n-1)]*str[0] + [31^(n-2)]*str[1] +...+ str[n-1]
 */
 
-int HashTable::hashCode(const string key){
+int HashTable::hashCode(const string key)const{
 	int code = 0;
 	for(int i= 0; i < key.length(); i++ ){
-		code += key.at[i] + 31*code;
+		code += key.at(i) + 31*code;
 	}
 	return code;
 }

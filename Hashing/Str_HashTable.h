@@ -23,7 +23,7 @@ class HashTable{
 		HashTable(int size = 50);
 		~HashTable();
 		int hashCode(const string)const;
-		const string* getElement(const string);
+	        string* getElement(const string)const;
 		void insert(const string key, const string value);
 		void removeElement(const string);
 		
