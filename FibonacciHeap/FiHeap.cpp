@@ -1,6 +1,5 @@
 
 #include <iostream>
-//#include <stdlib>
 #include <vector>
 #include "FiNode.h"
 using std::cerr;
@@ -15,7 +14,7 @@ class FiHeap{
 		FiHeap();
 		~FiHeap();
 		//Perform deep copy
-		FiHeap<T>* operator=(const FiHeap<T>*);
+		const FiHeap<T>& operator=(const FiHeap<T>&);
 		
 		void insert(FiNode<T>*);
 		void insert(const T);
@@ -24,9 +23,10 @@ class FiHeap{
 		void deleteMin();
 		void deleteNode(const T);
 		void decreaseKey(const T target,const T delta);
-		void setKey(const T targetm const T newVal);
+		void setKey(const T target, const T newVal);
 		void merge(const FiHeap*);
-
+	
+ 	
 };
 
 //Default constructor
@@ -51,7 +51,7 @@ template<typename T>
 const FiHeap<T>& FiHeap<T>::operator=(const FiHeap& other){
 	if(this != &other){
 		delete this;
-		min = new FiNode<T>(ohter->getMin());
+		min = new FiNode<T>(other->getMin());
 		FiNode<T>* sibling = other->getMin()->right;
 		while(sibling != other->getMin()){
 			insert(sibling);
@@ -148,7 +148,7 @@ void FiHeap<T>::deleteMin(){
 			tempMin->appendNode(temp);
 		}
 		temp->parent = NULL;
-		temp = temp->right
+		temp = temp->right;
 	}while(temp == min->child);
 	//Step3.
 
@@ -217,8 +217,8 @@ void FiHeap<T>::deleteNode(const T target){
 		targetNode->unlink();
 		if(delChild != NULL){
 			do{
-				min->appendNode(delChildren);
-				delChildren = delChildren-> right;
+				min->appendNode(delChild);
+				delChild = delChild-> right;
 			}while(delChild != targetNode->child);
 		}	
 	}	
@@ -256,8 +256,8 @@ void FiHeap<T>::decreaseKey(T target, T delta){
 	//The target node is not a root, then check the heap property
 	if(dNode->parent != NULL){
 		if(dNode->getValue() < dNode->parent->getValue()){
-			FiNode<T>* temp = deNode;			
-			deNode = min->append(dNode);
+			FiNode<T>* temp = dNode;			
+			dNode = min->append(dNode);
 			delete temp->unlink();
 		}
 	}
