@@ -1,4 +1,4 @@
-#include "Tri_Dict.h"
+#include "Trie_Dict.h"
 #include <cstdlib>
 
 //Default constructor
@@ -7,7 +7,7 @@ Dictionary::Dictionary(){
 }
 
 //Default destructor
-Dictionary::~Dictionary{
+Dictionary::~Dictionary(){
 	removeTrie(root);
 }
 
@@ -20,12 +20,12 @@ Dictionary::~Dictionary{
 	@parameter: 1. the word; 2. the definition of the word
 	@return address of the newly created Trie node.
 */
-Trie Dictionary::create(string word = "", string definition = ""){
+Dictionary::Trie Dictionary::create(string word, string definition){
 	Trie new_node = new TrieNode;
 
 	new_node->word = word;
 	new_node->definition = definition;
-	for(auto child:children){
+	for(auto child:new_node->children){
 		child = NULL;
 	}
 	
@@ -124,7 +124,7 @@ bool Dictionary::insertTrie(string _word, string _definition){
 	string check("");
 	uint32_t index = 0;
 	uint32_t length = _word.length();
-	for(uint_32_t i = 0; i<length; i++){
+	for(uint32_t i = 0; i<length; i++){
 		index = toInt(_word[i]);
 		check += _word[i];
 		if(insert_node->children[index] == NULL){
@@ -138,7 +138,7 @@ bool Dictionary::insertTrie(string _word, string _definition){
 		}else{
 			if(i == length-1){
 				//the word is complete
-				if(insert_node->children[index]->definition == NULL){
+				if(insert_node->children[index]->definition == ""){
 					//the node has empty definition, then add the definition
 					insert_node->children[index]->definition = _definition;
 				}else{
@@ -177,12 +177,12 @@ bool Dictionary::modify(string _word, string _definition){
 		std::exit(1);
 	}
 	
-	uint32_t length = word.length();
+	uint32_t length = _word.length();
 	
 	
 	for(uint32_t i = 0; i<length; i++){
 	
-		uint16_t index = toInt(word[i]);
+		uint16_t index = toInt(_word[i]);
 		
 		if(search->children[index] == NULL){
 			return success;
@@ -208,7 +208,7 @@ bool Dictionary::modify(string _word, string _definition){
 	the file is successfully loaded, false otherwise
 */
 bool Dictionary::load(string fileName){
-	ifstream inputFile(fileName.c_str());
+	std::ifstream inputFile(fileName.c_str());
 	
 	if(inputFile.fail()){return false;}
 
@@ -216,9 +216,9 @@ bool Dictionary::load(string fileName){
 	
 	bool success = true;
 	while(!inputFile.eof()){
-		getLine(inputFile,inWord, ':');
-		getLine(inputFile, inDefin, '\n');
-		if(insert(inWord, inDefin)){
+		std::getline(inputFile,inWord, ':');
+		std::getline(inputFile, inDefin, '\n');
+		if(insertTrie(inWord, inDefin)){
 			std::cout<<"the word: "<<inWord<<" is successfully inserted in the dicitonary"<<std::endl;
 		}else{
 			std::cout<<"the word: "<<inWord<<" cannot be inserted"<<std::endl;

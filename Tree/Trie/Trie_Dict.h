@@ -1,7 +1,8 @@
 /*
 	Implement a simple dictionary using Tried data structure.
 	Support functionalities including: look-up words, 
-	populate dictionary from txt files.
+	populate dictionary from txt files, insert words and definition and
+	modification operation.
 */
 #ifndef TRIE_DICT_H_
 #define TRIE_DICT_H_
@@ -35,17 +36,17 @@ class Dictionary{
 		Trie root;
 
 		//utility functions
-		Trie create(string word, string definition);
+		Trie create(string word = "", string definition = "");
 		//Convert lower_case letter to int, where 'a' correspond to 0
 		int toInt(char c)const{ return c - 'a';}
 		void write(Trie, std::fstream&);
-		void validateStr(string);
+		void validateStr(string&);
+		void removeTrie(Trie&);
 
 	public:
 		Dictionary();
 		~Dictionary();
 		bool insertTrie(string word,string definition);
-		void removeTrie(Trie);
 		string lookup(const string);
 		bool writeTrie(string);
 		void display()const;
@@ -68,7 +69,7 @@ class Dictionary{
 			}else if(isLower){
 				return c;
 			}else{
-				return NonLetterErr();
+				throw NonLetterErr();
 			}
 		}
 };
